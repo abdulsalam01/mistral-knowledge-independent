@@ -33,7 +33,7 @@ function initUtils(embeddings) {
     return { textSplitter, vectorStore, promptTemplate };
 }
 
-async function insertContext(url, textSplitter, vectorStore, endSlice = 100) {
+async function initContext(url, textSplitter, vectorStore, endSlice = 100) {
     const loader = new PlaywrightWebBaseLoader(url, {    
         launchOptions: {
             headless: true,        
@@ -51,7 +51,7 @@ async function insertContext(url, textSplitter, vectorStore, endSlice = 100) {
 async function runMain(question, source, endSlice, apiKey = process.env.API_KEY) {
     const { embeddings, llm } = initLLM(apiKey);
     const { promptTemplate, textSplitter, vectorStore } = initUtils(embeddings);
-    const _ = insertContext(source, textSplitter, vectorStore, endSlice);
+    const _ = initContext(source, textSplitter, vectorStore, endSlice);
 
     const retriever = await vectorStore.similaritySearch(question);
     const prompt = await promptTemplate.invoke({
